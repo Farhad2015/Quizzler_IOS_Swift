@@ -7,7 +7,6 @@
 //
 
 import UIKit
-#import "ProgressHUD.h
 
 class ViewController: UIViewController {
     
@@ -70,9 +69,9 @@ class ViewController: UIViewController {
         let correctAnswer = allQuestions.list[questionNumber].answer
         if pickAnswer == correctAnswer {
             score += 1
-            print("Your Answer is correct.")
+            ProgressHUD.showSuccess("Correct")
         } else {
-            print("You choose wrong answer.")
+            ProgressHUD.showError("Wrong")
         }
     }
     
