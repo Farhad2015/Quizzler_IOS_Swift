@@ -7,6 +7,7 @@
 //
 
 import UIKit
+#import "ProgressHUD.h
 
 class ViewController: UIViewController {
     
@@ -15,6 +16,7 @@ class ViewController: UIViewController {
     let allQuestions = QuestionBank()
     var pickAnswer : Bool = false
     var questionNumber : Int = 0
+    var score : Int = 0
     
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -24,10 +26,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //first question
-        questionLabel.text = allQuestions.list[0].questionText
-        progressLabel.text = "1/13"
-        
+        //Load Initial Question
+        nextQuestion()
     }
 
 
@@ -45,14 +45,16 @@ class ViewController: UIViewController {
     
     
     func updateUI() {
-      
+        scoreLabel.text = "Score: \(score)"
+        progressLabel.text = "\(questionNumber + 1)/13"
+        progressBar.frame.size.width = (view.frame.size.width / 13) * CGFloat(questionNumber + 1)
     }
     
 
     func nextQuestion() {
         if questionNumber < allQuestions.list.count {
-            progressLabel.text = "\(questionNumber + 1)/13"
             questionLabel.text = allQuestions.list[questionNumber].questionText
+            updateUI()
         } else {
             let alert = UIAlertController(title: "Awesome", message: "You've finished all the questions, Do You want to start over?", preferredStyle: .alert)
             let restartAction = UIAlertAction(title: "Restart", style: .default, handler: { (UIAlertAction) in
@@ -67,6 +69,7 @@ class ViewController: UIViewController {
     func checkAnswer() {
         let correctAnswer = allQuestions.list[questionNumber].answer
         if pickAnswer == correctAnswer {
+            score += 1
             print("Your Answer is correct.")
         } else {
             print("You choose wrong answer.")
@@ -76,6 +79,7 @@ class ViewController: UIViewController {
     
     func startOver() {
         questionNumber = 0
+        score = 0
         nextQuestion()
     }
     
